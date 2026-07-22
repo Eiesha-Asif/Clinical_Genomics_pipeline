@@ -1,0 +1,59 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%labels
+    Author clinical-genomics-pipeline
+    Tools  minimap2, samtools, htslib
+    Description "Alignment + BAM handling container for the HiFi variant calling pipeline"
+
+%post
+    # ------------------------------------------------------------------
+    # This section runs once, while the container image is being built.
+    # It installs everything the ALIGN / SORT / INDEX steps of the
+    # pipeline need. You do not run these commands yourself — Singularity
+    # runs them for you when you build the .sif file (see the manual).
+    # ------------------------------------------------------------------
+    apt-get update && apt-get install -y --no-install-recommends \
+        wget \
+        curl \
+        build-essential \
+        zlib1g-dev \
+        libbz2-dev \
+        liblzma-dev \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        libncurses5-dev \
+        git \
+        ca-certificates \
+        && rm -rf /var/lib/apt/lists/*
+
+    # --- minimap2 (long-read aligner) ---
+    cd /opt && \
+        wget -q https://github.com/lh3/minimap2/releases/download/v2.28/minimap2-2.28_x64-linux.tar.bz2 && \
+        tar -xjf minimap2-2.28_x64-linux.tar.bz2 && \
+        cp minimap2-2.28_x64-linux/minimap2 /usr/local/bin/ && \
+        rm -rf minimap2-2.28_x64-linux*
+
+    # --- samtools + htslib (BAM/VCF handling) ---
+    cd /opt && \
+        wget -q https://github.com/samtools/samtools/releases/download/1.20/samtools-1.20.tar.bz2 && \
+        tar -xjf samtools-1.20.tar.bz2 && \
+        cd samtools-1.20 && \
+        ./configure && make -j$(nproc) && make install && \
+        cd /opt && rm -rf samtools-1.20*
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/local/bin:$PATH
+
+%test
+    # Runs automatically after the build finishes, to confirm the
+    # container actually works.
+    minimap2 --version
+    samtools --version | head -n 1
+
+%help
+    Container for the HiFi Variant Calling pipeline (align + sort + index steps).
+    Build with:
+        sudo singularity build minimap2.sif minimap2.def
+    Or pull a pre-built equivalent from Galaxy Depot (faster, see LAB_MANUAL.md).

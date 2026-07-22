@@ -1,0 +1,22 @@
+# Container images (large — build/pull locally instead of committing)
+containers/*.sif
+
+# Nextflow runtime files
+work/
+.nextflow/
+.nextflow.log*
+results/*
+!results/.gitkeep
+
+# Data (large sequencing files — keep out of git, add your own locally)
+data/*.fastq
+data/*.fq
+data/*.fa
+data/*.fasta
+data/*.fasta.gz
+data/*.fastq.gz
+
+# OS / editor junk
+.DS_Store
+*.swp
+.ipynb_checkpoints/

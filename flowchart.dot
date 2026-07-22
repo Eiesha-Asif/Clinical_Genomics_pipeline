@@ -1,0 +1,31 @@
+// flowchart.dot
+// Render with: dot -Tpng flowchart.dot -o flowchart.png
+digraph pipeline {
+    rankdir=LR;
+    node [shape=box, style="rounded,filled", fillcolor="#eef4ff", fontname="Helvetica"];
+
+    reference [label="Reference FASTA", shape=oval, fillcolor="#fff3cd"];
+    reads     [label="HiFi FASTQ reads", shape=oval, fillcolor="#fff3cd"];
+
+    faidx     [label="SAMTOOLS_FAIDX\n(index reference)"];
+    align     [label="MINIMAP2_ALIGN\n(map reads to reference)"];
+    sort      [label="SAMTOOLS_SORT\n(coordinate sort)"];
+    index     [label="SAMTOOLS_INDEX\n(index sorted BAM)"];
+    clair3    [label="CLAIR3\n(AI variant calling)", fillcolor="#d4edda"];
+
+    vcf       [label="variants.vcf.gz", shape=oval, fillcolor="#f8d7da"];
+    bam       [label="sorted.bam + .bai", shape=oval, fillcolor="#f8d7da"];
+
+    reference -> faidx;
+    reference -> align;
+    reads -> align;
+    align -> sort;
+    sort -> index;
+    sort -> bam;
+    index -> bam;
+    sort -> clair3;
+    index -> clair3;
+    reference -> clair3;
+    faidx -> clair3;
+    clair3 -> vcf;
+}

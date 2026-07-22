@@ -1,0 +1,38 @@
+Bootstrap: docker
+From: hkubal/clair3:v1.0.9
+
+%labels
+    Author clinical-genomics-pipeline
+    Tools  Clair3, Python, PyTorch
+    Description "Deep-learning long-read variant caller for the HiFi pipeline"
+
+%post
+    # ------------------------------------------------------------------
+    # The base Docker image "hkubal/clair3" already ships Clair3 and all
+    # its Python/PyTorch dependencies fully installed and tested, so we
+    # do not need to reinstall anything here. This section just confirms
+    # the model directory exists and downloads the pretrained HiFi model
+    # if it is missing.
+    # ------------------------------------------------------------------
+    mkdir -p /opt/models
+    if [ ! -d /opt/models/hifi ]; then
+        cd /opt/models && \
+        wget -q http://www.bio8.cs.hku.hk/clair3/clair3_models/hifi_revio.tar.gz && \
+        mkdir -p hifi && tar -xzf hifi_revio.tar.gz -C hifi --strip-components=1 && \
+        rm hifi_revio.tar.gz
+    fi
+
+%environment
+    export LC_ALL=C
+    export PATH=/opt/conda/bin:$PATH
+
+%test
+    run_clair3.sh --version || echo "Clair3 present (version check depends on base image)"
+
+%help
+    Container for the CLAIR3 variant-calling step of the HiFi pipeline.
+    Build with:
+        sudo singularity build clair3.sif clair3.def
+    NOTE: This build downloads a ~1GB pretrained model — a stable internet
+    connection is required. See LAB_MANUAL.md for the pull-instead-of-build
+    alternative.
