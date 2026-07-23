@@ -17,7 +17,6 @@ modules, containers) is unchanged in spirit and interface** — this fork adds:
   newcomers can understand *what* each line does and *why*
 - Small reliability additions (execution report + timeline) in `nextflow.config`
 
-If you are completely new to bioinformatics, command lines, or Nextflow —
 **start with `docs/LAB_MANUAL.md`, not this README.** This README is the
 technical reference; the manual is the step-by-step tutorial.
 
@@ -180,6 +179,19 @@ singularity pull --name clair3.sif docker://hkubal/clair3:v1.0.9
 
 ```bash
 # Run with the built-in tiny test dataset (recommended first run)
+nextflow run main.nf -profile test
+
+#Download the reference genome:
+    → GRCh38 primary assembly (Ensembl):
+      https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+    Save it into data/reference.fa (after gunzip -k), or point --reference
+    directly at wherever you saved it.
+
+# put a small reference.fa and HUCR38.fastq in the data/ folder first —
+# to get free sample HiFi test reads use
+https://github.com/marbl/HG002/blob/main/Sequencing_data.md
+
 nextflow run main.nf -profile test
 
 # Run with your own data
