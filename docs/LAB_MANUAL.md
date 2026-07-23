@@ -210,13 +210,14 @@ Download the reference genome:
     Save it into data/reference.fa (after gunzip -k), or point --reference
     directly at wherever you saved it.
     # or get it by:
+    
     ```bash
     wget https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz -O data/reference.fa.gz
-gunzip -k data/reference.fa.gz
-mv data/reference.fa.gz.out data/reference.fa 2>/dev/null || true
+    gunzip -k data/reference.fa.gz
+    mv data/reference.fa.gz.out data/reference.fa 2>/dev/null || true
 # or
-gunzip data/reference.fa.gz    # will make reference.fa 
- 
+    gunzip data/reference.fa.gz    # will make reference.fa 
+     ```
 # put a small reference.fa and HUCR38.fastq in the data/ folder first —
 # see data/README.md for where to get free sample HiFi test reads
 ```bash
