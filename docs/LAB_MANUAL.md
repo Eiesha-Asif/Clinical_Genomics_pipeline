@@ -203,10 +203,14 @@ You should see two files with real sizes (not 0 bytes).
 
 ### 8.1 First run — the built-in tiny test dataset
 Before using real data, always test with the small example dataset so you can catch problems in seconds, not hours.
+#Get small test data from:
+1. PacBio official tiny test-data repo ( fast, smoke-test best sample data)
 
-Download the reference genome:
+https://github.com/PacificBiosciences/PacBioTestData
+
+#Download the reference genome:
     → GRCh38 primary assembly (Ensembl):
-      https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz  
+      https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz 
     Save it into data/reference.fa (after gunzip -k), or point --reference
     directly at wherever you saved it.
     # or get it by:
@@ -219,7 +223,7 @@ Download the reference genome:
     gunzip data/reference.fa.gz    # will make reference.fa 
      ```
 # put a small reference.fa and HUCR38.fastq in the data/ folder first —
-# see data/README.md for where to get free sample HiFi test reads
+
 ```bash
 nextflow run main.nf -profile test
 ```
