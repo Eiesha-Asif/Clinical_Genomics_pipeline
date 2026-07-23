@@ -206,15 +206,15 @@ Before using real data, always test with the small example dataset so you can ca
 
 Download the reference genome:
     → GRCh38 primary assembly (Ensembl):
-      https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-
+      https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz  
     Save it into data/reference.fa (after gunzip -k), or point --reference
     directly at wherever you saved it.
 
 # put a small reference.fa and HUCR38.fastq in the data/ folder first —
 # see data/README.md for where to get free sample HiFi test reads
+```bash
 nextflow run main.nf -profile test
-
+```
 ### 8.2 Running with your own data
 
 ```bash
